@@ -1,0 +1,38 @@
+create gke cluster 1 node base
+gcloud container clusters create <NAME_CLUSTER>   --num-nodes=1   --zone=us-central1-a   --machine-type=e2-standard-4   --enable-ip-alias   --enable-autorepair   --enable-autoupgrade   --enable-network-policy 
+
+custom machine type 
+--machine-type=custom-2-8192  # 2 vCPUs, 8 GB RAM
+
+get creadentials 
+gcloud container clusters get-credentials <NAME_CLUSTER> --zone=us-central1-a
+
+other options 
+gcloud container clusters create my-single-node-cluster \
+    --num-nodes=1 \
+    --machine-type=e2-medium \
+    --enable-ip-alias \
+    --network=default \
+    --create-subnetwork=range=/24 \
+    --enable-master-authorized-networks \
+    --zone=us-central1-a
+
+open FW for kubectl address 
+gcloud compute firewall-rules create allow-k8s-api-access \
+  --direction=INGRESS \
+  --priority=1000 \
+  --network=default \
+  --action=ALLOW \
+  --rules=tcp:443 \
+  --source-ranges=<IP_OF_CLIENT>
+
+Common E2 Machine Types:
+MachineType	    vCPUs	  RAM
+e2-micro	      0.25	1 GB
+e2-small	      0.5	2 GB
+e2-medium	      2	4 GB
+e2-standard-2	  2	8 GB
+e2-standard-4	  4	16 GB
+
+Delete cluster
+gcloud container clusters delete <CLUSTER_NAME>
