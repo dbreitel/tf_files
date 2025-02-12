@@ -1,3 +1,4 @@
+#creates a cluster with 2 nodes based on custom vm, opens network for cluster and a specific ip for the kube-api
 # Configure the Google Cloud provider
 provider "google" {
   project = "aqua-dbank"  # Replace with your project ID
@@ -37,7 +38,7 @@ resource "google_container_cluster" "primary" {
   # Master authorized networks config
   master_authorized_networks_config {
     cidr_blocks {
-      cidr_block   = "10.92.1.134/32"
+      cidr_block   = "x.x.x.x/32" # client ip
       display_name = "Allowed IP"
     }
   }
@@ -76,6 +77,6 @@ resource "google_compute_firewall" "kube_api_access" {
     ports    = ["443"]  # Kubernetes API server port
   }
 
-  source_ranges = ["10.92.1.134/32"]
+  source_ranges = ["x.x.x.x/32"] #client ip 
   target_tags   = ["gke001"]  # This tag is automatically added to GKE master
 }
