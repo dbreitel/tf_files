@@ -10,6 +10,9 @@ provider "google" {
 resource "google_container_cluster" "primary" {
   name     = "gke001"
   location = "us-central1-a"
+# Disable deletion protection
+  deletion_protection = false
+  
 
   # We can't create a cluster with no node pool defined, so we create
   # the smallest possible default node pool and immediately delete it.
